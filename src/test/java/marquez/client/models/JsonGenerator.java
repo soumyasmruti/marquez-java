@@ -129,8 +129,8 @@ public final class JsonGenerator {
   }
 
   private static String newJsonFor(final Stream stream) {
-    final ArrayNode fields = MAPPER.valueToTree(stream.getFields().orElse());
-    final ArrayNode tags = MAPPER.valueToTree(stream.getTags().orElse());
+    final ArrayNode fields = MAPPER.valueToTree(stream.getFields().orElse(null));
+    final ArrayNode tags = MAPPER.valueToTree(stream.getTags().orElse(null));
     final ObjectNode obj = MAPPER
         .createObjectNode()
         .put("type", STREAM)
