@@ -88,6 +88,8 @@ public final class ModelGenerator {
         now,
         newSourceName(),
         null,
+        null,
+        null,
         newDescription());
   }
 
@@ -108,6 +110,8 @@ public final class ModelGenerator {
         now,
         now,
         newSourceName(),
+        null,
+        null,
         null,
         newSchemaLocation(),
         newDescription());

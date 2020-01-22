@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import marquez.client.Utils;
 
+import java.util.ArrayList;
+
 public final class JsonGenerator {
   private JsonGenerator() {}
 
@@ -121,13 +123,15 @@ public final class JsonGenerator {
         .put("createdAt", ISO_INSTANT.format(dbTable.getCreatedAt()))
         .put("updatedAt", ISO_INSTANT.format(dbTable.getUpdatedAt()))
         .put("sourceName", dbTable.getSourceName())
-        .put("lastModified", dbTable.getLastModified().map(ISO_INSTANT::format).orElse(null))
+        .put("lastModifiedAt", dbTable.getLastModifiedAt().map(ISO_INSTANT::format).orElse(null))
         .put("description", dbTable.getDescription().orElse(null))
         .toString();
   }
 
   private static String newJsonFor(final Stream stream) {
-    return MAPPER
+    final ArrayNode fields = MAPPER.valueToTree(stream.getFields().orElse());
+    final ArrayNode tags = MAPPER.valueToTree(stream.getTags().orElse());
+    final ObjectNode obj = MAPPER
         .createObjectNode()
         .put("type", STREAM)
         .put("name", stream.getName())
@@ -135,10 +139,13 @@ public final class JsonGenerator {
         .put("createdAt", ISO_INSTANT.format(stream.getCreatedAt()))
         .put("updatedAt", ISO_INSTANT.format(stream.getUpdatedAt()))
         .put("sourceName", stream.getSourceName())
-        .put("lastModified", stream.getLastModified().map(ISO_INSTANT::format).orElse(null))
+        .put("lastModifiedAt", stream.getLastModifiedAt().map(ISO_INSTANT::format).orElse(null))
         .put("schemaLocation", stream.getSchemaLocation().toString())
-        .put("description", stream.getDescription().orElse(null))
-        .toString();
+        .put("description", stream.getDescription().orElse(null));
+
+    obj.putArray("fields").addAll(fields);
+    obj.putArray("tags").addAll(tags);
+    return obj.toString();
   }
 
   public static String newJsonFor(final JobMeta meta) {

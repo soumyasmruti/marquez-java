@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
@@ -42,15 +43,21 @@ public abstract class Dataset {
   @Getter @NonNull private final Instant createdAt;
   @Getter @NonNull private final Instant updatedAt;
   @Getter @NonNull private final String sourceName;
-  @Nullable private final Instant lastModified;
+  @Nullable private final List<Field> fields;
+  @Nullable private final List<String> tags;
+  @Nullable private final Instant lastModifiedAt;
   @Nullable private final String description;
+
+  public Optional<List<Field>> getFields() {return Optional.ofNullable(fields);}
+
+  public Optional<List<String>> getTags() {return Optional.ofNullable(tags);}
 
   public Optional<String> getDescription() {
     return Optional.ofNullable(description);
   }
 
-  public Optional<Instant> getLastModified() {
-    return Optional.ofNullable(lastModified);
+  public Optional<Instant> getLastModifiedAt() {
+    return Optional.ofNullable(lastModifiedAt);
   }
 
   public static Dataset fromJson(@NonNull final String json) {

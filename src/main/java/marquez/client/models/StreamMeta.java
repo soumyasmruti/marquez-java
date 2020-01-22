@@ -16,6 +16,7 @@ package marquez.client.models;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.net.URL;
+import java.util.List;
 import javax.annotation.Nullable;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -34,9 +35,11 @@ public final class StreamMeta extends DatasetMeta {
       final String physicalName,
       final String sourceName,
       @NonNull final URL schemaLocation,
+      @Nullable final List<Field> fields,
+      @Nullable final List<String> tags,
       @Nullable final String description,
       @Nullable final String runId) {
-    super(physicalName, sourceName, description, runId);
+    super(physicalName, sourceName, fields, tags, description, runId);
     this.schemaLocation = schemaLocation;
   }
 
@@ -53,6 +56,8 @@ public final class StreamMeta extends DatasetMeta {
     private String physicalName;
     private String sourceName;
     private URL schemaLocation;
+    @Nullable private List<Field> fields;
+    @Nullable private List<String> tags;
     @Nullable private String description;
     @Nullable private String runId;
 
@@ -63,6 +68,16 @@ public final class StreamMeta extends DatasetMeta {
 
     public Builder sourceName(@NonNull String sourceName) {
       this.sourceName = sourceName;
+      return this;
+    }
+
+    public Builder fields(@Nullable List<Field> fields) {
+      this.fields = fields;
+      return this;
+    }
+
+    public Builder tags(@Nullable List<String> tags) {
+      this.tags = tags;
       return this;
     }
 
@@ -86,7 +101,8 @@ public final class StreamMeta extends DatasetMeta {
     }
 
     public StreamMeta build() {
-      return new StreamMeta(physicalName, sourceName, schemaLocation, description, runId);
+      return new StreamMeta(
+          physicalName, sourceName, schemaLocation, fields, tags, description, runId);
     }
   }
 }

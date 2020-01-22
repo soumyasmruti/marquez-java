@@ -76,7 +76,7 @@ public class MarquezClientTest {
   // COMMON
   private static final Instant CREATED_AT = newTimestamp();
   private static final Instant UPDATED_AT = CREATED_AT;
-  private static final Instant LAST_MODIFIED = newTimestamp();
+  private static final Instant LAST_MODIFIED_AT = newTimestamp();
 
   // NAMESPACE
   private static final String NAMESPACE_NAME = newNamespaceName();
@@ -107,6 +107,8 @@ public class MarquezClientTest {
           UPDATED_AT,
           DB_TABLE_SOURCE_NAME,
           null,
+          null,
+          null,
           DB_TABLE_DESCRIPTION);
   private static final DbTable DB_TABLE_MODIFIED =
       new DbTable(
@@ -115,7 +117,9 @@ public class MarquezClientTest {
           CREATED_AT,
           UPDATED_AT,
           DB_TABLE_SOURCE_NAME,
-          LAST_MODIFIED,
+          null,
+          null,
+          LAST_MODIFIED_AT,
           DB_TABLE_DESCRIPTION);
 
   // STREAM DATASET
@@ -132,6 +136,8 @@ public class MarquezClientTest {
           UPDATED_AT,
           STREAM_SOURCE_NAME,
           null,
+          null,
+          null,
           STREAM_SCHEMA_LOCATION,
           STREAM_DESCRIPTION);
   private static final Stream STREAM_MODIFIED =
@@ -141,7 +147,9 @@ public class MarquezClientTest {
           CREATED_AT,
           UPDATED_AT,
           STREAM_SOURCE_NAME,
-          LAST_MODIFIED,
+          null,
+          null,
+          LAST_MODIFIED_AT,
           STREAM_SCHEMA_LOCATION,
           STREAM_DESCRIPTION);
 
@@ -368,7 +376,7 @@ public class MarquezClientTest {
     final Dataset modifiedDataset = client.createDataset(DB_TABLE_NAME, modifiedMeta);
     assertThat(modifiedDataset).isInstanceOf(DbTable.class);
     assertThat((DbTable) modifiedDataset).isEqualTo(DB_TABLE_MODIFIED);
-    assertThat(modifiedDataset.getLastModified().get().isAfter(beforeModified));
+    assertThat(modifiedDataset.getLastModifiedAt().get().isAfter(beforeModified));
   }
 
   @Test
@@ -437,7 +445,7 @@ public class MarquezClientTest {
     final Dataset modifiedDataset = client.createDataset(STREAM_NAME, modifiedMeta);
     assertThat(modifiedDataset).isInstanceOf(Stream.class);
     assertThat((Stream) modifiedDataset).isEqualTo(STREAM_MODIFIED);
-    assertThat(modifiedDataset.getLastModified().get().isAfter(beforeModified));
+    assertThat(modifiedDataset.getLastModifiedAt().get().isAfter(beforeModified));
   }
 
   @Test

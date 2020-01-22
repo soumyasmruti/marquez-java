@@ -17,6 +17,7 @@ package marquez.client.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
@@ -36,8 +37,14 @@ import lombok.ToString;
 public abstract class DatasetMeta {
   @Getter @NonNull private final String physicalName;
   @Getter @NonNull private final String sourceName;
+  @Nullable private final List<Field> fields;
+  @Nullable private final List<String> tags;
   @Nullable private final String description;
   @Nullable private final String runId;
+
+  public Optional<List<Field>> getFields() {return Optional.ofNullable(fields);}
+
+  public Optional<List<String>> getTags() {return Optional.ofNullable(tags);}
 
   public Optional<String> getDescription() {
     return Optional.ofNullable(description);
