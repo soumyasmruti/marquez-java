@@ -20,10 +20,7 @@ import static marquez.client.models.SourceType.POSTGRESQL;
 import com.google.common.collect.ImmutableMap;
 import java.net.URL;
 import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 import marquez.client.Utils;
 
 public final class ModelGenerator {
@@ -75,6 +72,8 @@ public final class ModelGenerator {
     return DbTableMeta.builder()
         .physicalName(newDatasetPhysicalName())
         .sourceName(newSourceName())
+        .fields(newFields())
+        .tags(newTags())
         .description(newDescription())
         .build();
   }
@@ -87,8 +86,8 @@ public final class ModelGenerator {
         now,
         now,
         newSourceName(),
-        null,
-        null,
+        newFields(),
+        newTags(),
         null,
         newDescription());
   }
@@ -97,8 +96,10 @@ public final class ModelGenerator {
     return StreamMeta.builder()
         .physicalName(newStreamName())
         .sourceName(newSourceName())
-        .schemaLocation(newSchemaLocation())
+        .fields(newFields())
+        .tags(newTags())
         .description(newDescription())
+        .schemaLocation(newSchemaLocation())
         .build();
   }
 
@@ -110,8 +111,8 @@ public final class ModelGenerator {
         now,
         now,
         newSourceName(),
-        null,
-        null,
+        newFields(),
+        newTags(),
         null,
         newSchemaLocation(),
         newDescription());
@@ -260,5 +261,13 @@ public final class ModelGenerator {
 
   public static Instant newTimestamp() {
     return Instant.now();
+  }
+
+  public static List<Field> newFields() {
+    return new ArrayList<>();
+  }
+
+  public static List<String> newTags() {
+    return new ArrayList<>();
   }
 }

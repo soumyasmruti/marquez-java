@@ -31,6 +31,7 @@ import marquez.client.Utils;
 public final class StreamMeta extends DatasetMeta {
   @Getter private final URL schemaLocation;
 
+  @Builder
   public StreamMeta(
       final String physicalName,
       final String sourceName,
@@ -48,61 +49,16 @@ public final class StreamMeta extends DatasetMeta {
     return Utils.toJson(this);
   }
 
-  public static Builder builder() {
-    return new Builder();
-  }
-
-  public static final class Builder {
-    private String physicalName;
-    private String sourceName;
+  public static class StreamMetaBuilder {
     private URL schemaLocation;
-    @Nullable private List<Field> fields;
-    @Nullable private List<String> tags;
-    @Nullable private String description;
-    @Nullable private String runId;
 
-    public Builder physicalName(@NonNull String physicalName) {
-      this.physicalName = physicalName;
-      return this;
-    }
-
-    public Builder sourceName(@NonNull String sourceName) {
-      this.sourceName = sourceName;
-      return this;
-    }
-
-    public Builder fields(@Nullable List<Field> fields) {
-      this.fields = fields;
-      return this;
-    }
-
-    public Builder tags(@Nullable List<String> tags) {
-      this.tags = tags;
-      return this;
-    }
-
-    public Builder schemaLocation(@NonNull String schemaLocationString) {
+    public StreamMetaBuilder schemaLocation(@NonNull String schemaLocationString) {
       return schemaLocation(Utils.toUrl(schemaLocationString));
     }
 
-    public Builder schemaLocation(@NonNull URL schemaLocation) {
+    public StreamMetaBuilder schemaLocation(@NonNull URL schemaLocation) {
       this.schemaLocation = schemaLocation;
       return this;
-    }
-
-    public Builder description(@Nullable String description) {
-      this.description = description;
-      return this;
-    }
-
-    public Builder runId(@Nullable String runId) {
-      this.runId = runId;
-      return this;
-    }
-
-    public StreamMeta build() {
-      return new StreamMeta(
-          physicalName, sourceName, schemaLocation, fields, tags, description, runId);
     }
   }
 }

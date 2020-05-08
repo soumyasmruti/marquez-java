@@ -14,19 +14,18 @@
 
 package marquez.client.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nullable;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 
-@AllArgsConstructor(onConstructor = @__(@JsonCreator))
 @EqualsAndHashCode
 @ToString
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -42,9 +41,28 @@ public abstract class DatasetMeta {
   @Nullable private final String description;
   @Nullable private final String runId;
 
-  public Optional<List<Field>> getFields() {return Optional.ofNullable(fields);}
+  public DatasetMeta(
+      @NonNull String physicalName,
+      @NonNull String sourceName,
+      @Nullable List<Field> fields,
+      @Nullable List<String> tags,
+      @Nullable String description,
+      @Nullable String runId) {
+    this.physicalName = physicalName;
+    this.sourceName = sourceName;
+    this.fields = ImmutableList.copyOf(new ArrayList<>(fields));
+    this.tags = ImmutableList.copyOf(new ArrayList<>(tags));
+    this.description = description;
+    this.runId = runId;
+  }
 
-  public Optional<List<String>> getTags() {return Optional.ofNullable(tags);}
+  public List<Field> getFields() {
+    return fields;
+  }
+
+  public List<String> getTags() {
+    return tags;
+  }
 
   public Optional<String> getDescription() {
     return Optional.ofNullable(description);

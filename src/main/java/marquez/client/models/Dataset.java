@@ -14,22 +14,21 @@
 
 package marquez.client.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.ImmutableList;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nullable;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
 import marquez.client.Utils;
 
-@AllArgsConstructor(onConstructor = @__(@JsonCreator))
 @EqualsAndHashCode
 @ToString
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -48,9 +47,34 @@ public abstract class Dataset {
   @Nullable private final Instant lastModifiedAt;
   @Nullable private final String description;
 
-  public Optional<List<Field>> getFields() {return Optional.ofNullable(fields);}
+  public Dataset(
+      @NonNull String name,
+      @NonNull String physicalName,
+      @NonNull Instant createdAt,
+      @NonNull Instant updatedAt,
+      @NonNull String sourceName,
+      @Nullable List<Field> fields,
+      @Nullable List<String> tags,
+      @Nullable Instant lastModifiedAt,
+      @Nullable String description) {
+    this.name = name;
+    this.physicalName = physicalName;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.sourceName = sourceName;
+    this.fields = ImmutableList.copyOf(new ArrayList<>(fields));
+    this.tags = ImmutableList.copyOf(new ArrayList<>(tags));
+    this.lastModifiedAt = lastModifiedAt;
+    this.description = description;
+  }
 
-  public Optional<List<String>> getTags() {return Optional.ofNullable(tags);}
+  public List<Field> getFields() {
+    return fields;
+  }
+
+  public List<String> getTags() {
+    return tags;
+  }
 
   public Optional<String> getDescription() {
     return Optional.ofNullable(description);
